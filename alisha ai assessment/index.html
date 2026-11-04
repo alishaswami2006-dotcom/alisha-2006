@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LUMÉA PARIS | Haute Botanical Cosmetics & Luxury Skincare</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>">
+
+  <!-- Google Fonts: Playfair Display & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Playfair Display"', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            gold: {
+              300: '#F0D49C',
+              400: '#E5C07B',
+              500: '#D4AF37',
+              600: '#B8972E',
+              700: '#94751F',
+            },
+            rose: {
+              50: '#FDF8F7',
+              100: '#F9ECE8',
+              200: '#F4D9D2',
+              300: '#EABBB0',
+              500: '#D87A68',
+              800: '#8A3E31',
+              900: '#5A261D',
+            },
+            noir: {
+              900: '#121110',
+              800: '#1C1917',
+              700: '#292524',
+              600: '#44403C',
+            },
+            cream: {
+              50: '#FDFBF7',
+              100: '#F7F3EA',
+              200: '#EFE8DA',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <!-- React 18 & Babel standalone -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #FDFBF7;
+      color: #1C1917;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+    .font-serif {
+      font-family: 'Playfair Display', serif;
+    }
+    .hero-glow {
+      background: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.15) 0%, rgba(253, 251, 247, 0) 70%);
+    }
+    .shimmer-card {
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .shimmer-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 30px -10px rgba(184, 151, 46, 0.16), 0 8px 12px -3px rgba(0, 0, 0, 0.04);
+    }
+    ::-webkit-scrollbar {
+      width: 7px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #F7F3EA;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #D4AF37;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- React Application Source with Pure Vector React Icons (No External DOM mutation errors!) -->
+  <script type="text/babel">
+    const { useState, useEffect, useMemo } = React;
+
+    // --- PURE VECTOR SVG ICONS (Bulletproof: no DOM mutation conflicts with React virtual DOM) ---
+    function Icon({ name, className = "w-4 h-4", fill = "none" }) {
+      const icons = {
+        sparkles: (
+          <path d="M12 3v3m0 12v3m9-9h-3M6 12H3m14.5-6.5l-2.1 2.1M8.6 15.4l-2.1 2.1m11-2.1l-2.1-2.1M8.6 8.6L6.5 6.5" />
+        ),
+        "shopping-bag": (
+          <>
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+            <path d="M3 6h18" />
+            <path d="M16 10a4 4 0 01-8 0" />
+          </>
+        ),
+        heart: (
+          <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0016.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 002 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+        ),
+        search: (
+          <>
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.35-4.35" />
+          </>
+        ),
+        eye: (
+          <>
+            <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+            <circle cx="12" cy="12" r="3" />
+          </>
+        ),
+        star: (
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        ),
+        x: (
+          <>
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+          </>
+        ),
+        trash: (
+          <>
+            <path d="M3 6h18" />
+            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+          </>
+        ),
+        lock: (
+          <>
+            <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+          </>
+        ),
+        check: (
+          <polyline points="20 6 9 17 4 12" />
+        ),
+        "check-circle": (
+          <>
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+            <polyline points="22 4 12 14.01 9 11.01" />
+          </>
+        ),
+        truck: (
+          <>
+            <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2" />
+            <path d="M15 18H9" />
+            <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.62l-3.48-4.35A1 1 0 0 0 17.52 8H14v10" />
+            <circle cx="17" cy="18" r="2" />
+            <circle cx="7" cy="18" r="2" />
+          </>
+        ),
+        shield: (
+          <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+        ),
+        feather: (
+          <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z" />
+        ),
+        gift: (
+          <>
+            <polyline points="20 12 20 22 4 22 4 12" />
+            <rect width="20" height="5" x="2" y="7" />
+            <line x1="12" x2="12" y1="22" y2="7" />
+          </>
+        ),
+        mail: (
+          <>
+            <rect width="20" height="16" x="2" y="4" rx="2" />
+            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+          </>
+        ),
+        clock: (
+          <>
+            <circle cx="12" cy="12" r="10" />
+            <polyline points="12 6 12 12 16 14" />
+          </>
+        ),
+        arrow: (
+          <>
+            <path d="M5 12h14" />
+            <path d="m12 5 7 7-7 7" />
+          </>
+        ),
+        chevron: (
+          <path d="m6 9 6 6 6-6" />
+        ),
+        award: (
+          <>
+            <circle cx="12" cy="8" r="6" />
+            <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" />
+          </>
+        )
+      };
+
+      return (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill={fill}
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className={className}
+        >
+          {icons[name] || icons.sparkles}
+        </svg>
+      );
+    }
+
+    // --- PRODUCT DATABASE ---
+    const RAW_PRODUCTS = [
+      {
+        id: 1,
+        name: "L'Élixir Céleste 24K Glow Serum",
+        subtitle: "Advanced Botanical Firming & Radiance Elixir",
+        category: "Skincare",
+        price: 68.0,
+        originalPrice: 85.0,
+        rating: 4.9,
+        reviewsCount: 342,
+        badge: "Bestseller",
+        volume: "50ml / 1.7 fl.oz",
+        skinType: "All Skin Types • Dull & Aging",
+        image: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=800&q=80",
+        description: "Infused with pure 24K gold flakes, bio-fermented hyaluronic acid, and Damascus rose extract. Locks in moisture for 72 hours, fading hyperpigmentation and imparting glass-skin luminescence.",
+        benefits: [
+          "Boosts natural skin luminosity by 88%",
+          "Smooths fine expression lines with triple peptides",
+          "Protects against daily environmental oxidative stress",
+          "Ultra-light, non-greasy silky finish"
+        ]
+      },
+      {
+        id: 2,
+        name: "Velours Rouge Matte Lipstick",
+        subtitle: "Hydrating Velvet Kiss • 16-Hour Stay",
+        category: "Makeup",
+        price: 34.0,
+        originalPrice: 40.0,
+        rating: 4.8,
+        reviewsCount: 218,
+        badge: "Trending",
+        shades: [
+          { name: "01 Parisian Ruby", hex: "#9E1B32" },
+          { name: "02 Rosewood Nude", hex: "#B86B77" },
+          { name: "03 Sunset Terracotta", hex: "#BA4A38" },
+          { name: "04 Midnight Berry", hex: "#611C35" }
+        ],
+        volume: "3.8g",
+        skinType: "Suitable for all lips",
+        image: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&w=800&q=80",
+        description: "An iconic luxury matte formula enriched with cold-pressed Moroccan argan oil and French shea butter. Delivers smudge-resistant, saturated color with a plush cloud-like velvet feel.",
+        benefits: [
+          "Weightless full-coverage pigmentation in one swipe",
+          "Hyaluronic micro-spheres for pillow-soft comfort",
+          "Transfer-proof, water-resistant formula lasts 16 hours",
+          "Magnetic gold-embossed casing"
+        ]
+      },
+      {
+        id: 3,
+        name: "Crème de Rose Hydratante",
+        subtitle: "Deep Moisture Barrier Recovery Cream",
+        category: "Skincare",
+        price: 74.0,
+        originalPrice: 92.0,
+        rating: 5.0,
+        reviewsCount: 489,
+        badge: "Award Winner",
+        volume: "60ml / 2.0 fl.oz",
+        skinType: "Dry, Normal, Dehydrated Skin",
+        image: "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=800&q=80",
+        description: "Formulated with Alpine Rose stem cells and five essential ceramides. Restores compromised moisture barriers, relieves redness, and leaves skin visibly plump, supple, and radiant.",
+        benefits: [
+          "Locks in intense moisture for up to 48 hours",
+          "Ceramide complex repairs sensitized lipid barrier",
+          "Cashmere texture without greasy residue",
+          "Instantly calms irritation and dryness"
+        ]
+      },
+      {
+        id: 4,
+        name: "Midnight Rose Eau de Parfum",
+        subtitle: "Sensual Amber, Damask Rose & Smoked Vanilla",
+        category: "Fragrance",
+        price: 110.0,
+        originalPrice: 135.0,
+        rating: 4.9,
+        reviewsCount: 164,
+        badge: "Luxury Exclusive",
+        volume: "100ml / 3.4 fl.oz",
+        skinType: "All skin",
+        image: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=800&q=80",
+        description: "An intoxicating fragrance composed in Grasse, France. Opening with pink pepper and juicy lychee, blossoming into Turkish roses, and settling into warm Madagascan vanilla and smoky ambergris.",
+        benefits: [
+          "25% Extrait concentration for 14+ hours longevity",
+          "Artisan French glass decanter with crystal cut stopper",
+          "Hypoallergenic organic grain alcohol base",
+          "Unforgettable romantic sillage"
+        ]
+      },
+      {
+        id: 5,
+        name: "Silk Glow Luminous Foundation",
+        subtitle: "Breathable Second-Skin Radiant Coverage",
+        category: "Makeup",
+        price: 46.0,
+        originalPrice: 52.0,
+        rating: 4.7,
+        reviewsCount: 198,
+        badge: "Top Rated",
+        shades: [
+          { name: "Fair Ivory 10N", hex: "#F7E6D7" },
+          { name: "Warm Honey 25W", hex: "#E7C7A7" },
+          { name: "Golden Amber 40W", hex: "#C79C6F" },
+          { name: "Rich Espresso 60C", hex: "#7E5136" }
+        ],
+        volume: "35ml / 1.2 fl.oz",
+        skinType: "Normal, Dry & Combination",
+        image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80",
+        description: "Light-diffusing optical pearls and soothing camellia seed oils create customizable medium-to-full coverage that blurs pores while letting your authentic vitality shine.",
+        benefits: [
+          "Non-comedogenic formula won't clog pores",
+          "SPF 25 broad-spectrum mineral UV defense",
+          "Sweat and humidity resistant for 12 hours",
+          "Dewy, healthy, breathable finish"
+        ]
+      },
+      {
+        id: 6,
+        name: "Éclat d'Or 24K Shimmering Body Oil",
+        subtitle: "Nourishing Dry Oil with Golden Micro-Pearls",
+        category: "Bath & Body",
+        price: 52.0,
+        originalPrice: 65.0,
+        rating: 4.9,
+        reviewsCount: 147,
+        badge: "Summer Glow",
+        volume: "100ml / 3.4 fl.oz",
+        skinType: "All Body Skin",
+        image: "https://images.unsplash.com/photo-1608248597359-009d13f9fcfe?auto=format&fit=crop&w=800&q=80",
+        description: "Drench skin in Parisian radiance. Blended with sweet almond, cold-pressed jojoba, and camellia seed oils infused with mineral mica gold particles. Absorbs with a satin, dry-touch feel.",
+        benefits: [
+          "Leaves skin silky smooth with a sun-kissed luminous sheen",
+          "Notes of toasted coconut, monoi flower, and amber",
+          "Zero grease transfer — clothes stay clean",
+          "Can also be brushed into hair for glistening highlights"
+        ]
+      },
+      {
+        id: 7,
+        name: "Pure Botanical Cleansing Balm",
+        subtitle: "Melt-Away Cleanser & Makeup Dissolver",
+        category: "Skincare",
+        price: 38.0,
+        originalPrice: 45.0,
+        rating: 4.8,
+        reviewsCount: 310,
+        badge: "Clean Beauty",
+        volume: "100g / 3.5 oz",
+        skinType: "Sensitive, Dry, Oily & Acne-Prone",
+        image: "https://images.unsplash.com/photo-1556228722-d0b71f98bc19?auto=format&fit=crop&w=800&q=80",
+        description: "Transforms from a lush sorbet balm into a silky cleansing oil, then emulsifies into a soothing milk. Dissolves stubborn waterproof makeup and pollutants without stripping hydration.",
+        benefits: [
+          "Melt-away action dissolves waterproof mascara in seconds",
+          "Organic chamomile and blue tansy soothe irritation",
+          "Rinses 100% clean with zero cloudy film over eyes",
+          "100% vegan formulation"
+        ]
+      },
+      {
+        id: 8,
+        name: "Peptide & Bakuchiol Eye Recovery",
+        subtitle: "Dark Circle & Puffiness Smoothing Cream",
+        category: "Skincare",
+        price: 54.0,
+        originalPrice: 62.0,
+        rating: 4.9,
+        reviewsCount: 265,
+        badge: "Staff Pick",
+        volume: "15ml / 0.5 fl.oz",
+        skinType: "Delicate Eye Area",
+        image: "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=800&q=80",
+        description: "Formulated with Bakuchiol (gentle plant retinol alternative), caffeine, and biomimetic peptides. Gently refreshes tired eyelids, fades dark circles, and smooths fine lines.",
+        benefits: [
+          "Cooling ceramic applicator tip de-puffs on contact",
+          "Visibly diminishes dark under-eye circles",
+          "Zero irritation — gentle for contact lens wearers",
+          "Prevents concealer from settling into fine lines"
+        ]
+      },
+      {
+        id: 9,
+        name: "Santal Blanc Botanical Mist",
+        subtitle: "Organic White Sandalwood & Neroli Aura Mist",
+        category: "Fragrance",
+        price: 42.0,
+        originalPrice: 48.0,
+        rating: 4.7,
+        reviewsCount: 92,
+        badge: "Clean Beauty",
+        volume: "150ml / 5.1 fl.oz",
+        skinType: "All skin",
+        image: "https://images.unsplash.com/photo-1616949755610-8c9bbc08f138?auto=format&fit=crop&w=800&q=80",
+        description: "A calming hair and body aura mist that harmonizes senses with crisp white sandalwood, blossoming Mediterranean neroli, and creamy cardamom.",
+        benefits: [
+          "Multi-purpose spray for skin, hair, and pillow",
+          "Infused with hyaluronic acid for an instant dewy moisture boost",
+          "Alcohol-free, soothing sensitive skin barrier",
+          "Frosted glass bottle"
+        ]
+      },
+      {
+        id: 10,
+        name: "24K Champagne Diamond Highlighter",
+        subtitle: "Silky Baked Powder with Holographic Sheen",
+        category: "Makeup",
+        price: 38.0,
+        originalPrice: 44.0,
+        rating: 4.8,
+        reviewsCount: 173,
+        badge: "Glow Essential",
+        shades: [
+          { name: "Champagne Pearl", hex: "#F3E5AB" },
+          { name: "Rose Quartz", hex: "#ECC5C8" },
+          { name: "Bronze Goddess", hex: "#A97A52" }
+        ],
+        volume: "9g / 0.31 oz",
+        skinType: "All Complexions",
+        image: "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=800&q=80",
+        description: "Slow-baked on Italian terracotta tiles for 24 hours to achieve an ultra-smooth consistency. Imparts a refined glass glaze across cheekbones without chunky glitter.",
+        benefits: [
+          "Micro-milled powder doesn't accentuate pores",
+          "Wet or dry application for subtle day sheen or molten night glow",
+          "Custom embossed compact with built-in mirror",
+          "12-hour fade-resistant vibrancy"
+        ]
+      },
+      {
+        id: 11,
+        name: "Rose Quartz Face Roller & Gua Sha Set",
+        subtitle: "Hand-Carved Grade-A Crystal Sculpting Tools",
+        category: "Bath & Body",
+        price: 45.0,
+        originalPrice: 55.0,
+        rating: 5.0,
+        reviewsCount: 388,
+        badge: "Bestseller",
+        volume: "Set of 2 Tools",
+        skinType: "All Skin Types",
+        image: "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&w=800&q=80",
+        description: "Handcrafted from 100% natural, ethically mined Brazilian Rose Quartz stone. Encourages lymphatic drainage, releases facial tension, and sculpts contours.",
+        benefits: [
+          "Naturally cooling crystal soothes puffiness and inflammation",
+          "Sculpts facial contours and releases jaw tension",
+          "Reinforced noiseless silicone mechanism for smooth rolling",
+          "Includes velvet travel pouch"
+        ]
+      },
+      {
+        id: 12,
+        name: "Botanical Night Renewal Nectar",
+        subtitle: "Overnight Restorative Facial Oil with 15 Botanicals",
+        category: "Skincare",
+        price: 78.0,
+        originalPrice: 95.0,
+        rating: 4.9,
+        reviewsCount: 421,
+        badge: "Must Have",
+        volume: "30ml / 1.0 fl.oz",
+        skinType: "Dry, Dull, Mature & Stressed Skin",
+        image: "https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?auto=format&fit=crop&w=800&q=80",
+        description: "An artisanal nocturnal elixir packed with cold-pressed rosehip seed oil, sea buckthorn, marula, and evening primrose. Works overnight during cellular regeneration to awaken radiant, supple skin.",
+        benefits: [
+          "Rich in Omegas 3, 6, 7 & 9 for profound lipid replenishment",
+          "Awaken to velvety, plump, revived skin every morning",
+          "Aromatherapeutic lavender & neroli notes promote restful sleep",
+          "100% cold-pressed raw botanicals"
+        ]
+      }
+    ];
+
+    // Currency Rates
+    const CURRENCIES = {
+      USD: { symbol: "$", rate: 1.0 },
+      EUR: { symbol: "€", rate: 0.92 },
+      GBP: { symbol: "£", rate: 0.79 },
+      INR: { symbol: "₹", rate: 84.5 }
+    };
+
+    // --- MAIN REACT APPLICATION COMPONENT ---
+    function App() {
+      const [currency, setCurrency] = useState("USD");
+      const [cart, setCart] = useState([]);
+      const [wishlist, setWishlist] = useState([]);
+      const [isCartOpen, setIsCartOpen] = useState(false);
+      const [isWishlistOpen, setIsWishlistOpen] = useState(false);
+      const [selectedProduct, setSelectedProduct] = useState(null);
+      const [isQuizOpen, setIsQuizOpen] = useState(false);
+      const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+      const [orderSuccess, setOrderSuccess] = useState(null);
+      const [activeCategory, setActiveCategory] = useState("All");
+      const [searchQuery, setSearchQuery] = useState("");
+      const [sortBy, setSortBy] = useState("featured");
+      const [toast, setToast] = useState(null);
+      const [promoCode, setPromoCode] = useState("");
+      const [appliedDiscount, setAppliedDiscount] = useState(0);
+
+      const showToast = (message) => {
+        setToast(message);
+        setTimeout(() => setToast(null), 3000);
+      };
+
+      const formatPrice = (amount) => {
+        const { symbol, rate } = CURRENCIES[currency];
+        const converted = (amount * rate).toFixed(amount * rate % 1 === 0 ? 0 : 2);
+        return `${symbol}${converted}`;
+      };
+
+      const addToCart = (product, quantity = 1, shade = null) => {
+        setCart(prev => {
+          const itemKey = `${product.id}-${shade?.name || 'default'}`;
+          const existing = prev.find(item => item.key === itemKey);
+          if (existing) {
+            return prev.map(item =>
+              item.key === itemKey ? { ...item, quantity: item.quantity + quantity } : item
+            );
+          }
+          return [...prev, { ...product, key: itemKey, selectedShade: shade, quantity }];
+        });
+        showToast(`✨ Added "${product.name}" to your bag`);
+      };
+
+      const updateCartQty = (key, delta) => {
+        setCart(prev => prev.map(item => {
+          if (item.key === key) {
+            const newQty = item.quantity + delta;
+            return newQty > 0 ? { ...item, quantity: newQty } : null;
+          }
+          return item;
+        }).filter(Boolean));
+      };
+
+      const removeFromCart = (key) => {
+        setCart(prev => prev.filter(item => item.key !== key));
+        showToast("Item removed from your bag");
+      };
+
+      const toggleWishlist = (product) => {
+        if (wishlist.some(p => p.id === product.id)) {
+          setWishlist(prev => prev.filter(p => p.id !== product.id));
+          showToast(`Removed from your Wishlist`);
+        } else {
+          setWishlist(prev => [...prev, product]);
+          showToast(`💖 Saved to your Wishlist`);
+        }
+      };
+
+      const subtotal = useMemo(() => {
+        return cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      }, [cart]);
+
+      const discountAmount = subtotal * appliedDiscount;
+      const freeShippingThreshold = 50.0;
+      const shippingFee = subtotal >= freeShippingThreshold || subtotal === 0 ? 0 : 8.5;
+      const finalTotal = Math.max(0, subtotal - discountAmount + shippingFee);
+
+      const triggerConfetti = () => {
+        if (window.confetti) {
+          window.confetti({
+            particleCount: 80,
+            spread: 70,
+            origin: { y: 0.6 },
+            colors: ['#D4AF37', '#E5C07B', '#D87A68', '#FFFFFF']
+          });
+        }
+      };
+
+      const handleApplyPromo = (code) => {
+        const clean = code.trim().toUpperCase();
+        if (clean === "GLOW20") {
+          setAppliedDiscount(0.20);
+          showToast("🎉 Promo GLOW20 applied! 20% OFF");
+          triggerConfetti();
+        } else if (clean === "LUMEA10") {
+          setAppliedDiscount(0.10);
+          showToast("🎉 Promo LUMEA10 applied! 10% OFF");
+        } else {
+          showToast("Invalid code. Use 'GLOW20' for 20% off!");
+        }
+      };
+
+      const filteredProducts = useMemo(() => {
+        return RAW_PRODUCTS.filter(product => {
+          const matchesCategory = activeCategory === "All" || product.category === activeCategory;
+          const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                product.subtitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                product.category.toLowerCase().includes(searchQuery.toLowerCase());
+          return matchesCategory && matchesSearch;
+        }).sort((a, b) => {
+          if (sortBy === "price-low") return a.price - b.price;
+          if (sortBy === "price-high") return b.price - a.price;
+          if (sortBy === "rating") return b.rating - a.rating;
+          return 0;
+        });
+      }, [activeCategory, searchQuery, sortBy]);
+
+      return (
+        <div className="min-h-screen flex flex-col bg-[#FDFBF7] text-stone-900 selection:bg-gold-500 selection:text-white">
+          
+          {/* Top Announcement Bar */}
+          <div className="bg-[#121110] text-gold-400 text-xs py-2 px-4 text-center font-medium tracking-wider flex items-center justify-center gap-2">
+            <Icon name="sparkles" className="w-3.5 h-3.5 text-gold-400 inline" />
+            <span>COMPLIMENTARY EXPRESS DELIVERY ON ORDERS OVER $50</span>
+            <span className="hidden md:inline">•</span>
+            <span className="hidden md:inline">USE CODE <strong className="text-white underline">GLOW20</strong> FOR 20% OFF</span>
+          </div>
+
+          {/* Luxury Sticky Navbar */}
+          <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-stone-200/80">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="flex items-center justify-between h-20">
+                
+                {/* Currency & Skin Quiz Pill */}
+                <div className="flex items-center space-x-3">
+                  <div className="relative group">
+                    <button className="flex items-center text-xs font-semibold tracking-wider text-stone-600 hover:text-gold-600 uppercase border border-stone-300 rounded-full px-2.5 py-1">
+                      <span>{currency}</span>
+                      <Icon name="chevron" className="w-3 h-3 ml-1" />
+                    </button>
+                    <div className="absolute left-0 mt-1 w-24 bg-white rounded-lg shadow-xl border border-stone-100 py-1 hidden group-hover:block z-50">
+                      {Object.keys(CURRENCIES).map(curr => (
+                        <button
+                          key={curr}
+                          onClick={() => setCurrency(curr)}
+                          className={`w-full text-left px-3 py-1.5 text-xs flex justify-between hover:bg-gold-50 ${currency === curr ? 'font-bold text-gold-600' : 'text-stone-700'}`}
+                        >
+                          <span>{curr}</span>
+                          <span>{CURRENCIES[curr].symbol}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => setIsQuizOpen(true)}
+                    className="hidden lg:flex items-center gap-1.5 text-xs uppercase tracking-wider font-semibold text-rose-800 bg-rose-50 hover:bg-rose-100 border border-rose-200 px-3 py-1.5 rounded-full transition"
+                  >
+                    <Icon name="sparkles" className="w-3.5 h-3.5 text-rose-500" />
+                    <span>Skin Routine Quiz</span>
+                  </button>
+                </div>
+
+                {/* Brand Logo */}
+                <div className="text-center cursor-pointer" onClick={() => { setActiveCategory("All"); setSearchQuery(""); }}>
+                  <span className="block font-serif text-2xl sm:text-3xl tracking-[0.25em] font-bold text-stone-900">
+                    LUMÉA
+                  </span>
+                  <span className="block text-[9px] tracking-[0.4em] uppercase text-gold-600 font-semibold -mt-1">
+                    PARIS • BOTANIQUE
+                  </span>
+                </div>
+
+                {/* Actions: Search, Wishlist, Bag */}
+                <div className="flex items-center space-x-2 sm:space-x-4">
+                  <div className="relative hidden md:block">
+                    <input
+                      type="text"
+                      placeholder="Search serums, lipsticks..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="w-48 lg:w-64 pl-9 pr-4 py-1.5 text-xs bg-stone-100 border border-stone-200 rounded-full focus:outline-none focus:ring-1 focus:ring-gold-500"
+                    />
+                    <div className="absolute left-3 top-2.5 text-stone-400">
+                      <Icon name="search" className="w-3.5 h-3.5" />
+                    </div>
+                    {searchQuery && (
+                      <button onClick={() => setSearchQuery("")} className="absolute right-3 top-2.5 text-stone-400">
+                        <Icon name="x" className="w-3 h-3" />
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Wishlist */}
+                  <button
+                    onClick={() => setIsWishlistOpen(true)}
+                    className="relative p-2 text-stone-700 hover:text-rose-500 transition rounded-full hover:bg-stone-100"
+                    title="Wishlist"
+                  >
+                    <Icon name="heart" className={`w-5 h-5 ${wishlist.length > 0 ? 'text-rose-500 fill-rose-500' : ''}`} />
+                    {wishlist.length > 0 && (
+                      <span className="absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                        {wishlist.length}
+                      </span>
+                    )}
+                  </button>
+
+                  {/* Bag */}
+                  <button
+                    onClick={() => setIsCartOpen(true)}
+                    className="relative flex items-center gap-2 bg-[#121110] hover:bg-black text-white px-3.5 py-2 rounded-full text-xs font-semibold tracking-wider transition shadow-sm"
+                  >
+                    <Icon name="shopping-bag" className="w-4 h-4 text-gold-400" />
+                    <span className="hidden sm:inline">BAG</span>
+                    <span className="bg-gold-500 text-stone-900 px-1.5 py-0.5 rounded-full text-[10px] font-bold">
+                      {cart.reduce((total, item) => total + item.quantity, 0)}
+                    </span>
+                  </button>
+                </div>
+
+              </div>
+
+              {/* Category Pills Bar */}
+              <div className="flex items-center justify-center space-x-6 py-2.5 border-t border-stone-100 text-xs tracking-wider uppercase font-medium overflow-x-auto no-scrollbar">
+                {["All", "Skincare", "Makeup", "Fragrance", "Bath & Body"].map(cat => (
+                  <button
+                    key={cat}
+                    onClick={() => setActiveCategory(cat)}
+                    className={`whitespace-nowrap pb-1 transition-all ${
+                      activeCategory === cat ? "text-gold-600 font-bold border-b-2 border-gold-500" : "text-stone-500 hover:text-stone-900"
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </header>
+
+          {/* Toast Alert */}
+          {toast && (
+            <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-[#121110] text-white px-5 py-3 rounded-xl shadow-2xl border border-gold-500/40">
+              <Icon name="check-circle" className="w-5 h-5 text-gold-400" />
+              <span className="text-sm font-medium">{toast}</span>
+            </div>
+          )}
+
+          {/* Main Hero & Sections */}
+          <main className="flex-grow">
+            
+            {/* HERO SECTION */}
+            <section className="relative overflow-hidden bg-gradient-to-b from-[#F7F3EA] via-[#FDFBF7] to-[#FDFBF7] py-16 lg:py-24 border-b border-stone-200/60">
+              <div className="absolute inset-0 hero-glow pointer-events-none"></div>
+
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                  
+                  <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gold-400/15 border border-gold-500/30 text-gold-700 text-xs font-semibold tracking-widest uppercase">
+                      <Icon name="award" className="w-3.5 h-3.5 text-gold-600" />
+                      <span>2026 Parisian Beauty Excellence Laureate</span>
+                    </div>
+
+                    <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl text-stone-900 leading-[1.15] font-normal">
+                      The Poetry of <br />
+                      <span className="italic font-serif font-light text-gold-700">Luminous Botanicals</span> & 24K Gold.
+                    </h1>
+
+                    <p className="text-stone-600 text-sm sm:text-base max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                      Handcrafted in Grasse and Paris. We blend rare organic Alpine floras with clinically proven biotechnical actives to reveal your most youthful, celestial radiance.
+                    </p>
+
+                    <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
+                      <a
+                        href="#collection"
+                        className="bg-[#121110] hover:bg-stone-800 text-white px-8 py-3.5 rounded-full text-xs font-bold tracking-widest uppercase transition-all shadow-lg flex items-center gap-2"
+                      >
+                        <span>Explore Collection</span>
+                        <Icon name="arrow" className="w-4 h-4 text-gold-400" />
+                      </a>
+
+                      <button
+                        onClick={() => setIsQuizOpen(true)}
+                        className="bg-white hover:bg-stone-50 text-stone-900 border border-stone-300 px-6 py-3.5 rounded-full text-xs font-bold tracking-widest uppercase transition flex items-center gap-2"
+                      >
+                        <Icon name="sparkles" className="w-4 h-4 text-gold-600" />
+                        <span>Find Your Routine</span>
+                      </button>
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-4 pt-8 border-t border-stone-200/80 max-w-md mx-auto lg:mx-0 text-center lg:text-left">
+                      <div>
+                        <div className="text-lg font-serif font-bold text-stone-900">100%</div>
+                        <div className="text-[11px] text-stone-500 uppercase tracking-wider">Cruelty-Free</div>
+                      </div>
+                      <div>
+                        <div className="text-lg font-serif font-bold text-stone-900">15+</div>
+                        <div className="text-[11px] text-stone-500 uppercase tracking-wider">Rare Botanicals</div>
+                      </div>
+                      <div>
+                        <div className="text-lg font-serif font-bold text-stone-900">4.9 ★</div>
+                        <div className="text-[11px] text-stone-500 uppercase tracking-wider">12,000+ Reviews</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="lg:col-span-5 relative">
+                    <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-white bg-white">
+                      <img
+                        src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=1000&q=80"
+                        alt="Luméa Luxury Cosmetics"
+                        className="w-full h-[460px] object-cover hover:scale-105 transition-transform duration-700"
+                      />
+                      
+                      <div className="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-md p-4 rounded-xl shadow-lg border border-stone-100 flex items-center justify-between">
+                        <div>
+                          <span className="text-[10px] font-bold text-gold-600 uppercase tracking-wider">Featured Elixir</span>
+                          <h4 className="font-serif text-sm font-bold text-stone-900">L'Élixir Céleste 24K Serum</h4>
+                          <div className="text-xs text-stone-600 font-semibold">{formatPrice(68.0)}</div>
+                        </div>
+                        <button
+                          onClick={() => setSelectedProduct(RAW_PRODUCTS[0])}
+                          className="bg-[#121110] hover:bg-gold-600 text-white p-2.5 rounded-full transition"
+                          title="Quick View"
+                        >
+                          <Icon name="eye" className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </section>
+
+            {/* TRUST BAR */}
+            <section className="bg-white border-b border-stone-200 py-6">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                  <div className="flex flex-col items-center space-y-1">
+                    <Icon name="truck" className="w-6 h-6 text-gold-600 mb-1" />
+                    <h5 className="text-xs font-bold uppercase tracking-wider text-stone-900">Free Express Delivery</h5>
+                    <p className="text-[11px] text-stone-500">Orders over $50 with carbon-neutral transit</p>
+                  </div>
+                  <div className="flex flex-col items-center space-y-1">
+                    <Icon name="shield" className="w-6 h-6 text-gold-600 mb-1" />
+                    <h5 className="text-xs font-bold uppercase tracking-wider text-stone-900">30-Day Radiant Guarantee</h5>
+                    <p className="text-[11px] text-stone-500">Love your glow or 100% money back</p>
+                  </div>
+                  <div className="flex flex-col items-center space-y-1">
+                    <Icon name="feather" className="w-6 h-6 text-gold-600 mb-1" />
+                    <h5 className="text-xs font-bold uppercase tracking-wider text-stone-900">Clean Botanical Actives</h5>
+                    <p className="text-[11px] text-stone-500">No parabens, sulfates, or microplastics</p>
+                  </div>
+                  <div className="flex flex-col items-center space-y-1">
+                    <Icon name="gift" className="w-6 h-6 text-gold-600 mb-1" />
+                    <h5 className="text-xs font-bold uppercase tracking-wider text-stone-900">2 Free Deluxe Samples</h5>
+                    <p className="text-[11px] text-stone-500">Included with every single order</p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* PRODUCTS COLLECTION */}
+            <section id="collection" className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              
+              <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-6 border-b border-stone-200 gap-4">
+                <div>
+                  <span className="text-xs uppercase tracking-widest text-gold-600 font-bold">Curated Formulation</span>
+                  <h2 className="font-serif text-3xl sm:text-4xl font-normal text-stone-900">
+                    The Luméa Haute Collection
+                  </h2>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-3">
+                  <div className="flex items-center gap-2 text-xs text-stone-500">
+                    <span>Sort by:</span>
+                    <select
+                      value={sortBy}
+                      onChange={(e) => setSortBy(e.target.value)}
+                      className="bg-white border border-stone-300 rounded-lg px-3 py-1.5 text-xs text-stone-800 font-medium"
+                    >
+                      <option value="featured">Featured & Curated</option>
+                      <option value="price-low">Price: Low to High</option>
+                      <option value="price-high">Price: High to Low</option>
+                      <option value="rating">Highest Rated</option>
+                    </select>
+                  </div>
+
+                  <span className="text-xs bg-stone-100 text-stone-600 px-3 py-1.5 rounded-full font-medium">
+                    {filteredProducts.length} Products
+                  </span>
+                </div>
+              </div>
+
+              {/* Product Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                {filteredProducts.map(product => {
+                  const isWishlisted = wishlist.some(w => w.id === product.id);
+                  return (
+                    <div
+                      key={product.id}
+                      className="shimmer-card bg-white rounded-2xl border border-stone-200 overflow-hidden flex flex-col group relative"
+                    >
+                      <div className="relative aspect-[4/5] overflow-hidden bg-stone-100">
+                        <img
+                          src={product.image}
+                          alt={product.name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+
+                        {product.badge && (
+                          <div className="absolute top-3 left-3 z-10">
+                            <span className="bg-[#121110]/90 text-gold-400 text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-full shadow">
+                              {product.badge}
+                            </span>
+                          </div>
+                        )}
+
+                        <button
+                          onClick={() => toggleWishlist(product)}
+                          className="absolute top-3 right-3 p-2 bg-white/90 rounded-full shadow-md text-stone-600 hover:text-rose-500 transition z-10"
+                        >
+                          <Icon name="heart" className={`w-4 h-4 ${isWishlisted ? 'text-rose-500 fill-rose-500' : ''}`} />
+                        </button>
+
+                        <div className="absolute inset-x-0 bottom-3 px-4 flex justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                          <button
+                            onClick={() => setSelectedProduct(product)}
+                            className="w-full bg-white/95 text-stone-900 py-2.5 rounded-xl text-xs font-bold tracking-wider uppercase shadow-lg flex items-center justify-center gap-1.5"
+                          >
+                            <Icon name="eye" className="w-4 h-4" />
+                            <span>Quick View</span>
+                          </button>
+                        </div>
+                      </div>
+
+                      <div className="p-5 flex flex-col flex-grow justify-between">
+                        <div>
+                          <div className="flex items-center justify-between text-xs text-stone-400 mb-1.5">
+                            <span className="uppercase tracking-widest font-semibold text-[10px] text-gold-600">
+                              {product.category}
+                            </span>
+                            <div className="flex items-center text-amber-500 font-semibold text-[11px]">
+                              <Icon name="star" className="w-3.5 h-3.5 text-amber-400 mr-1" fill="#FBBF24" />
+                              <span>{product.rating}</span>
+                              <span className="text-stone-400 text-[10px] ml-1">({product.reviewsCount})</span>
+                            </div>
+                          </div>
+
+                          <h3
+                            onClick={() => setSelectedProduct(product)}
+                            className="font-serif text-base font-bold text-stone-900 group-hover:text-gold-600 transition cursor-pointer line-clamp-1"
+                          >
+                            {product.name}
+                          </h3>
+                          <p className="text-stone-500 text-xs line-clamp-2 mt-1 leading-relaxed">
+                            {product.subtitle}
+                          </p>
+
+                          {product.shades && (
+                            <div className="flex items-center gap-1.5 mt-3">
+                              {product.shades.map((shade, idx) => (
+                                <span
+                                  key={idx}
+                                  title={shade.name}
+                                  className="w-3.5 h-3.5 rounded-full border border-stone-300 shadow-sm"
+                                  style={{ backgroundColor: shade.hex }}
+                                ></span>
+                              ))}
+                              <span className="text-[10px] text-stone-400 ml-1">{product.shades.length} shades</span>
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="pt-4 mt-4 border-t border-stone-100 flex items-center justify-between">
+                          <div>
+                            <div className="text-base font-bold text-stone-900">{formatPrice(product.price)}</div>
+                            {product.originalPrice > product.price && (
+                              <div className="text-xs text-stone-400 line-through">{formatPrice(product.originalPrice)}</div>
+                            )}
+                          </div>
+
+                          <button
+                            onClick={() => addToCart(product, 1, product.shades ? product.shades[0] : null)}
+                            className="bg-stone-900 hover:bg-gold-600 text-white px-4 py-2 rounded-xl text-xs font-semibold tracking-wider transition flex items-center gap-1.5"
+                          >
+                            <Icon name="shopping-bag" className="w-3.5 h-3.5" />
+                            <span>Add</span>
+                          </button>
+                        </div>
+                      </div>
+
+                    </div>
+                  );
+                })}
+              </div>
+
+            </section>
+
+            {/* DIAGNOSTIC BANNER */}
+            <section className="bg-gradient-to-r from-rose-900 via-stone-900 to-stone-950 text-white py-16 px-4 sm:px-6 lg:px-8">
+              <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
+                <div className="space-y-3 text-center md:text-left">
+                  <span className="text-xs font-bold text-gold-400 uppercase tracking-widest">
+                    AI Botanical Skin Analysis
+                  </span>
+                  <h3 className="font-serif text-2xl sm:text-3xl font-light">
+                    Unsure which formulation suits your complexion?
+                  </h3>
+                  <p className="text-stone-300 text-sm max-w-lg">
+                    Take our 60-second diagnostic consultation to decode your skin barrier and receive a personalized French botanical regimen with 20% off.
+                  </p>
+                </div>
+                <button
+                  onClick={() => setIsQuizOpen(true)}
+                  className="bg-gold-500 hover:bg-gold-400 text-stone-950 px-8 py-3.5 rounded-full font-bold text-xs uppercase tracking-widest shadow-xl transition flex items-center gap-2"
+                >
+                  <Icon name="sparkles" className="w-4 h-4 text-stone-950" />
+                  <span>Start Skin Quiz</span>
+                </button>
+              </div>
+            </section>
+
+            {/* VIP NEWSLETTER */}
+            <section className="bg-[#F7F3EA] py-16 border-t border-stone-200">
+              <div className="max-w-2xl mx-auto px-4 text-center">
+                <Icon name="mail" className="w-8 h-8 text-gold-600 mx-auto mb-3" />
+                <h3 className="font-serif text-3xl text-stone-900 font-normal">Join the Luméa Private Club</h3>
+                <p className="text-stone-600 text-sm mt-2 mb-6">
+                  Enjoy an immediate 20% voucher, private atelier previews, and invitations to masterclasses.
+                </p>
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    showToast("🎉 Merci! Your 20% voucher code is: GLOW20");
+                    triggerConfetti();
+                  }}
+                  className="flex flex-col sm:flex-row gap-2"
+                >
+                  <input
+                    type="email"
+                    required
+                    placeholder="Enter your email address"
+                    className="flex-grow px-5 py-3 rounded-full text-xs bg-white border border-stone-300 focus:outline-none focus:ring-2 focus:ring-gold-500"
+                  />
+                  <button
+                    type="submit"
+                    className="bg-[#121110] hover:bg-black text-white px-8 py-3 rounded-full text-xs font-bold tracking-widest uppercase transition"
+                  >
+                    Subscribe
+                  </button>
+                </form>
+              </div>
+            </section>
+
+          </main>
+
+          {/* FOOTER */}
+          <footer className="bg-[#121110] text-stone-400 py-16 border-t border-stone-800 text-xs">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+                <div className="space-y-4">
+                  <span className="block font-serif text-2xl tracking-[0.2em] font-bold text-white">
+                    LUMÉA
+                  </span>
+                  <p className="text-stone-400 leading-relaxed text-xs">
+                    Haute Parfumerie & Botanical Skincare crafted with French artisanal discipline and pure biocompatible botanical actives.
+                  </p>
+                </div>
+
+                <div>
+                  <h4 className="text-white font-bold uppercase tracking-wider mb-4">Collection</h4>
+                  <ul className="space-y-2.5">
+                    <li><a href="#collection" className="hover:text-gold-400">24K Radiance Serums</a></li>
+                    <li><a href="#collection" className="hover:text-gold-400">Velvet Lipsticks</a></li>
+                    <li><a href="#collection" className="hover:text-gold-400">Barrier Repair Creams</a></li>
+                    <li><a href="#collection" className="hover:text-gold-400">Extrait de Parfum</a></li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h4 className="text-white font-bold uppercase tracking-wider mb-4">Customer Care</h4>
+                  <ul className="space-y-2.5">
+                    <li><span className="hover:text-gold-400 cursor-pointer" onClick={() => setIsQuizOpen(true)}>Skin Diagnostic Quiz</span></li>
+                    <li><span className="hover:text-gold-400 cursor-pointer">30-Day Radiant Guarantee</span></li>
+                    <li><span className="hover:text-gold-400 cursor-pointer">Shipping & Global Tracking</span></li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h4 className="text-white font-bold uppercase tracking-wider mb-4">Parisian Flagship</h4>
+                  <p className="leading-relaxed">
+                    28 Rue du Faubourg Saint-Honoré<br />
+                    75008 Paris, France<br />
+                    concierge@lumeaparis.com
+                  </p>
+                  <div className="mt-3 flex items-center gap-2 text-gold-400">
+                    <Icon name="clock" className="w-4 h-4" />
+                    <span>Mon - Sat: 10:00 - 19:30 CET</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-8 border-t border-stone-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-stone-500">
+                <p>© 2026 LUMÉA PARIS. All Rights Reserved. Clean & Cruelty-Free certified.</p>
+                <div className="flex space-x-6">
+                  <span>Privacy Policy</span>
+                  <span>Terms of Service</span>
+                </div>
+              </div>
+            </div>
+          </footer>
+
+          {/* ================= MODALS ================= */}
+
+          {/* SHOPPING BAG DRAWER */}
+          {isCartOpen && (
+            <div className="fixed inset-0 z-50 overflow-hidden">
+              <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setIsCartOpen(false)}></div>
+              <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
+                <div className="w-screen max-w-md bg-white shadow-2xl flex flex-col">
+                  
+                  <div className="p-6 border-b border-stone-200 flex items-center justify-between bg-stone-50">
+                    <div className="flex items-center gap-2">
+                      <Icon name="shopping-bag" className="w-5 h-5 text-gold-600" />
+                      <h3 className="font-serif text-lg font-bold text-stone-900">Your Shopping Bag</h3>
+                      <span className="text-xs bg-gold-100 text-gold-800 font-bold px-2 py-0.5 rounded-full">
+                        {cart.reduce((t, i) => t + i.quantity, 0)}
+                      </span>
+                    </div>
+                    <button onClick={() => setIsCartOpen(false)} className="text-stone-400 hover:text-stone-700">
+                      <Icon name="x" className="w-5 h-5" />
+                    </button>
+                  </div>
+
+                  {/* Free shipping bar */}
+                  <div className="px-6 py-3 bg-amber-50/70 border-b border-amber-100 text-xs text-amber-900">
+                    {subtotal >= freeShippingThreshold ? (
+                      <div className="flex items-center gap-1.5 font-semibold text-emerald-700">
+                        <Icon name="check-circle" className="w-4 h-4 text-emerald-600" />
+                        <span>Unlocked complimentary Express Shipping!</span>
+                      </div>
+                    ) : (
+                      <div>
+                        <span>Add <strong>{formatPrice(freeShippingThreshold - subtotal)}</strong> more for <strong>FREE Shipping</strong>!</span>
+                        <div className="w-full bg-amber-200/60 h-1.5 rounded-full mt-1.5 overflow-hidden">
+                          <div
+                            className="bg-gold-500 h-full rounded-full transition-all"
+                            style={{ width: `${Math.min(100, (subtotal / freeShippingThreshold) * 100)}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Items */}
+                  <div className="flex-1 overflow-y-auto p-6 space-y-4">
+                    {cart.length === 0 ? (
+                      <div className="text-center py-16 text-stone-400 space-y-3">
+                        <Icon name="shopping-bag" className="w-12 h-12 mx-auto text-stone-300" />
+                        <p className="text-sm font-medium text-stone-600">Your shopping bag is empty.</p>
+                      </div>
+                    ) : (
+                      cart.map(item => (
+                        <div key={item.key} className="flex gap-4 p-3 bg-stone-50 rounded-xl border border-stone-200">
+                          <img src={item.image} alt={item.name} className="w-16 h-20 object-cover rounded-lg border" />
+                          <div className="flex-1 flex flex-col justify-between">
+                            <div>
+                              <div className="flex justify-between items-start">
+                                <h4 className="font-serif text-sm font-bold text-stone-900 line-clamp-1">{item.name}</h4>
+                                <button onClick={() => removeFromCart(item.key)} className="text-stone-400 hover:text-rose-600">
+                                  <Icon name="trash" className="w-3.5 h-3.5" />
+                                </button>
+                              </div>
+                              {item.selectedShade && (
+                                <div className="text-[11px] text-stone-500 flex items-center gap-1 mt-0.5">
+                                  <span className="w-2 h-2 rounded-full" style={{ backgroundColor: item.selectedShade.hex }}></span>
+                                  <span>{item.selectedShade.name}</span>
+                                </div>
+                              )}
+                              <div className="text-xs font-semibold text-stone-800 mt-1">{formatPrice(item.price)}</div>
+                            </div>
+
+                            <div className="flex items-center gap-2">
+                              <div className="flex items-center border border-stone-300 rounded-lg bg-white">
+                                <button onClick={() => updateCartQty(item.key, -1)} className="px-2 py-1 text-xs">-</button>
+                                <span className="px-2 text-xs font-bold">{item.quantity}</span>
+                                <button onClick={() => updateCartQty(item.key, 1)} className="px-2 py-1 text-xs">+</button>
+                              </div>
+                              <span className="text-xs font-bold text-stone-900 ml-auto">{formatPrice(item.price * item.quantity)}</span>
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+
+                  {/* Footer */}
+                  {cart.length > 0 && (
+                    <div className="p-6 border-t border-stone-200 bg-stone-50 space-y-4">
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          placeholder="Promo code (GLOW20)"
+                          value={promoCode}
+                          onChange={(e) => setPromoCode(e.target.value)}
+                          className="flex-grow px-3 py-2 text-xs bg-white border border-stone-300 rounded-lg uppercase font-semibold"
+                        />
+                        <button
+                          onClick={() => handleApplyPromo(promoCode)}
+                          className="bg-stone-800 hover:bg-stone-900 text-white px-4 py-2 text-xs font-bold rounded-lg uppercase"
+                        >
+                          Apply
+                        </button>
+                      </div>
+
+                      <div className="space-y-1.5 text-xs text-stone-600">
+                        <div className="flex justify-between">
+                          <span>Subtotal</span>
+                          <span className="font-semibold text-stone-900">{formatPrice(subtotal)}</span>
+                        </div>
+                        {appliedDiscount > 0 && (
+                          <div className="flex justify-between text-rose-600 font-semibold">
+                            <span>Discount ({(appliedDiscount * 100).toFixed(0)}% OFF)</span>
+                            <span>-{formatPrice(discountAmount)}</span>
+                          </div>
+                        )}
+                        <div className="flex justify-between">
+                          <span>Shipping</span>
+                          <span>{shippingFee === 0 ? <strong className="text-emerald-600 uppercase">FREE</strong> : formatPrice(shippingFee)}</span>
+                        </div>
+                        <div className="flex justify-between text-sm font-bold text-stone-900 pt-2 border-t">
+                          <span>Total</span>
+                          <span className="text-base text-gold-700">{formatPrice(finalTotal)}</span>
+                        </div>
+                      </div>
+
+                      <button
+                        onClick={() => { setIsCartOpen(false); setIsCheckoutOpen(true); }}
+                        className="w-full bg-[#121110] hover:bg-black text-white py-3.5 rounded-full text-xs font-bold tracking-widest uppercase transition flex items-center justify-center gap-2 shadow-lg"
+                      >
+                        <Icon name="lock" className="w-4 h-4 text-gold-400" />
+                        <span>Secure Checkout • {formatPrice(finalTotal)}</span>
+                      </button>
+                    </div>
+                  )}
+
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* QUICK VIEW MODAL */}
+          {selectedProduct && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+              <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setSelectedProduct(null)}></div>
+              <div className="relative bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl z-10 border border-stone-200">
+                <button onClick={() => setSelectedProduct(null)} className="absolute top-4 right-4 p-2 text-stone-400 hover:text-stone-800">
+                  <Icon name="x" className="w-5 h-5" />
+                </button>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                  <div className="rounded-2xl overflow-hidden aspect-square border">
+                    <img src={selectedProduct.image} alt={selectedProduct.name} className="w-full h-full object-cover" />
+                  </div>
+                  <div className="space-y-4">
+                    <div>
+                      <span className="text-[10px] font-bold text-gold-600 uppercase tracking-widest">{selectedProduct.category} • {selectedProduct.volume}</span>
+                      <h3 className="font-serif text-2xl font-bold text-stone-900 mt-1">{selectedProduct.name}</h3>
+                      <div className="flex items-center gap-2 mt-1">
+                        <div className="flex text-amber-400">
+                          {[...Array(5)].map((_, i) => (
+                            <Icon key={i} name="star" className="w-3.5 h-3.5 text-amber-400" fill="#FBBF24" />
+                          ))}
+                        </div>
+                        <span className="text-xs text-stone-500">{selectedProduct.rating} ({selectedProduct.reviewsCount} reviews)</span>
+                      </div>
+                    </div>
+
+                    <div className="text-2xl font-bold text-stone-900">{formatPrice(selectedProduct.price)}</div>
+                    <p className="text-stone-600 text-xs leading-relaxed">{selectedProduct.description}</p>
+
+                    <button
+                      onClick={() => {
+                        addToCart(selectedProduct, 1, selectedProduct.shades ? selectedProduct.shades[0] : null);
+                        setSelectedProduct(null);
+                      }}
+                      className="w-full bg-[#121110] hover:bg-gold-600 text-white py-3.5 rounded-full text-xs font-bold tracking-widest uppercase transition flex items-center justify-center gap-2"
+                    >
+                      <Icon name="shopping-bag" className="w-4 h-4 text-gold-400" />
+                      <span>Add To Bag</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* QUIZ MODAL */}
+          {isQuizOpen && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+              <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setIsQuizOpen(false)}></div>
+              <div className="relative bg-white rounded-3xl max-w-lg w-full p-8 shadow-2xl z-10 border border-stone-200">
+                <button onClick={() => setIsQuizOpen(false)} className="absolute top-4 right-4 text-stone-400">
+                  <Icon name="x" className="w-5 h-5" />
+                </button>
+                <div className="text-center space-y-2 mb-6">
+                  <div className="inline-flex p-2.5 rounded-full bg-gold-100 text-gold-700">
+                    <Icon name="sparkles" className="w-6 h-6 text-gold-600" />
+                  </div>
+                  <h3 className="font-serif text-2xl font-bold text-stone-900">Personalized Skin Diagnostic</h3>
+                  <p className="text-stone-500 text-xs">Unlock your custom Parisian formulation routine.</p>
+                </div>
+
+                <div className="space-y-4">
+                  <button
+                    onClick={() => {
+                      setIsQuizOpen(false);
+                      addToCart(RAW_PRODUCTS[0], 1);
+                      addToCart(RAW_PRODUCTS[2], 1);
+                      showToast("🌟 Routine generated! Use code GLOW20 for 20% off");
+                      setIsCartOpen(true);
+                      triggerConfetti();
+                    }}
+                    className="w-full bg-[#121110] hover:bg-gold-600 text-white py-3.5 rounded-full text-xs font-bold tracking-widest uppercase transition mt-4"
+                  >
+                    Select Routine & Get 20% OFF
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* CHECKOUT MODAL */}
+          {isCheckoutOpen && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+              <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setIsCheckoutOpen(false)}></div>
+              <div className="relative bg-white rounded-3xl max-w-lg w-full p-8 shadow-2xl z-10 border border-stone-200">
+                <button onClick={() => setIsCheckoutOpen(false)} className="absolute top-4 right-4 text-stone-400">
+                  <Icon name="x" className="w-5 h-5" />
+                </button>
+                <div className="mb-6">
+                  <span className="text-[10px] font-bold text-gold-600 uppercase tracking-widest">SSL Encrypted Checkout</span>
+                  <h3 className="font-serif text-2xl font-bold text-stone-900">Complete Your Order</h3>
+                  <div className="text-xs text-stone-500 mt-1">Total: <strong className="text-stone-900">{formatPrice(finalTotal)}</strong></div>
+                </div>
+
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    setIsCheckoutOpen(false);
+                    setCart([]);
+                    setOrderSuccess({ id: "LUM-" + Math.floor(100000 + Math.random() * 900000), total: formatPrice(finalTotal) });
+                    triggerConfetti();
+                  }}
+                  className="space-y-4 text-xs"
+                >
+                  <input type="text" required placeholder="Full Name" className="w-full p-2.5 bg-stone-50 border rounded-lg" />
+                  <input type="text" required placeholder="Shipping Address" className="w-full p-2.5 bg-stone-50 border rounded-lg" />
+                  <input type="text" required placeholder="Card Number (4000 1234 5678 9010)" className="w-full p-2.5 bg-stone-50 border rounded-lg" />
+                  <button type="submit" className="w-full bg-[#121110] hover:bg-gold-600 text-white py-3.5 rounded-full text-xs font-bold tracking-widest uppercase transition shadow-lg">
+                    Place Order • {formatPrice(finalTotal)}
+                  </button>
+                </form>
+              </div>
+            </div>
+          )}
+
+          {/* ORDER SUCCESS MODAL */}
+          {orderSuccess && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+              <div className="fixed inset-0 bg-black/70 backdrop-blur-md"></div>
+              <div className="relative bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl z-10 text-center space-y-4 border border-gold-300">
+                <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto">
+                  <Icon name="check" className="w-8 h-8 text-emerald-600" />
+                </div>
+                <h3 className="font-serif text-2xl font-bold text-stone-900">Merci for Choosing Luméa!</h3>
+                <p className="text-xs text-stone-600">Your order reference is <strong className="text-stone-900 font-mono">{orderSuccess.id}</strong>.</p>
+                <div className="bg-stone-50 p-3 rounded-xl text-xs text-stone-700">Total Paid: <strong>{orderSuccess.total}</strong></div>
+                <button onClick={() => setOrderSuccess(null)} className="w-full bg-[#121110] text-white py-3 rounded-full text-xs font-bold tracking-widest uppercase">
+                  Continue Shopping
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* WISHLIST DRAWER */}
+          {isWishlistOpen && (
+            <div className="fixed inset-0 z-50 overflow-hidden">
+              <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setIsWishlistOpen(false)}></div>
+              <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
+                <div className="w-screen max-w-md bg-white shadow-2xl flex flex-col p-6">
+                  <div className="flex items-center justify-between pb-4 border-b">
+                    <div className="flex items-center gap-2">
+                      <Icon name="heart" className="w-5 h-5 text-rose-500 fill-rose-500" />
+                      <h3 className="font-serif text-lg font-bold text-stone-900">Your Wishlist</h3>
+                    </div>
+                    <button onClick={() => setIsWishlistOpen(false)} className="text-stone-400">
+                      <Icon name="x" className="w-5 h-5" />
+                    </button>
+                  </div>
+
+                  <div className="flex-1 overflow-y-auto py-4 space-y-4">
+                    {wishlist.length === 0 ? (
+                      <div className="text-center py-16 text-stone-400">No items saved yet.</div>
+                    ) : (
+                      wishlist.map(item => (
+                        <div key={item.id} className="flex gap-3 p-3 bg-stone-50 rounded-xl border items-center">
+                          <img src={item.image} alt={item.name} className="w-16 h-16 object-cover rounded-lg" />
+                          <div className="flex-1">
+                            <h4 className="font-serif text-xs font-bold line-clamp-1">{item.name}</h4>
+                            <div className="text-xs text-gold-700 font-bold">{formatPrice(item.price)}</div>
+                          </div>
+                          <button
+                            onClick={() => { addToCart(item, 1); toggleWishlist(item); }}
+                            className="bg-[#121110] text-white px-3 py-1.5 rounded-lg text-xs"
+                          >
+                            Move to Bag
+                          </button>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+        </div>
+      );
+    }
+
+    const rootElement = document.getElementById("root");
+    const root = ReactDOM.createRoot(rootElement);
+    root.render(<App />);
+  </script>
+</body>
+</html>
